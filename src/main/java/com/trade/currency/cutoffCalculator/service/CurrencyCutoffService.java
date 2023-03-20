@@ -19,6 +19,7 @@ public class CurrencyCutoffService {
     @Autowired
     private CurrencyCutoffRepository repository;
 
+//Method to check string value is number or not
     public  boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -31,7 +32,7 @@ public class CurrencyCutoffService {
         return true;
     }
 
-
+//Method to calculate cutoff time and return response
     public SuccessResponse cutOffTime(CurrencyCutoff cur1Detail, CurrencyCutoff cur2Detail, String cutOffDate, String inputDate){
 
         String result="";
@@ -74,23 +75,23 @@ public class CurrencyCutoffService {
             result =  (Double.parseDouble(earliestCutoffCur1) > Double.parseDouble(earliestCutoffCur2)) ? earliestCutoffCur2 : earliestCutoffCur1;
 
         }
-        System.out.println(isNumeric(earliestCutoffCur2));
-        System.out.println(isNumeric(earliestCutoffCur1));
-        System.out.println("result is :"+result);
+       // System.out.println(isNumeric(earliestCutoffCur2));
+       // System.out.println(isNumeric(earliestCutoffCur1));
+      //  System.out.println("result is :"+result);
         SuccessResponse response=new SuccessResponse();
         response.setDate(inputDate);
         response.setCutoffTime(result);
         return response;
     }
 
-
+//Method to evaluate whether input date is today , tomorrow or After tomorrow 
     public String cutOffDateCalculator(String date) {
         if(LocalDate.parse(date).equals(LocalDate.now())) return "today";
         else if (LocalDate.parse(date).equals(LocalDate.now().plusDays(1))) return "tomorrow";
         else return "afterTomorrow";
 
     }
-
+// Method to validate input parametes format as valid date and valid format of currency
     public void validateCutoffDateParameter(String currency1, String currency2, String date) {
         if(!Pattern.matches("^[A-Z]{3}$",currency1))  throw new InvalidCurrency(currency1);
         if(!Pattern.matches("^[A-Z]{3}$",currency2))  throw new InvalidCurrency(currency2);
